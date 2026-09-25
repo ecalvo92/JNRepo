@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
      * Enables toggling password input between obscured dots and plain text.
      */
     const togglePassword = document.getElementById('toggle-password');
-    const passwordInput = document.getElementById('password');
+    const passwordInput = document.getElementById('Contrasenna');
 
     if (togglePassword && passwordInput) {
         togglePassword.addEventListener('click', function () {
