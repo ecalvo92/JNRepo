@@ -15,7 +15,9 @@
       <span>Proyecto JN</span>
     </a>
 
-    <form action="index.html" method="GET" id="loginForm" class="needs-validation" novalidate>
+    <form asp-action="Login" asp-controller="Home" method="post" id="loginForm" class="needs-validation" novalidate>
+
+      @Html.AntiForgeryToken()
 
       <div class="login-form-group">
         <label for="CorreoElectronico" class="login-form-label">Correo Electrónico</label>
