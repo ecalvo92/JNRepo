@@ -1,4 +1,4 @@
-﻿@model LoginRequestModel
+﻿@model RegisterRequestModel
 
 @{
   Layout = "_LayoutExterno";
@@ -15,9 +15,25 @@
       <span>Proyecto JN</span>
     </a>
 
-    <form asp-action="Login" asp-controller="Home" method="post" id="loginForm" class="needs-validation" novalidate>
+    <form asp-action="Register" asp-controller="Home" method="post" id="loginForm" class="needs-validation" novalidate>
 
       @Html.AntiForgeryToken()
+
+      <div class="login-form-group">
+        <label for="Identificacion" class="login-form-label">Identificación</label>
+        <div class="login-input-group">
+          <i class="bi bi-person-badge input-icon"></i>
+          <input type="text" asp-for="Identificacion" class="login-input">
+        </div>
+      </div>
+
+      <div class="login-form-group">
+        <label for="NombreCompleto" class="login-form-label">Nombre Completo</label>
+        <div class="login-input-group">
+          <i class="bi bi-person input-icon"></i>
+          <input type="text" asp-for="NombreCompleto" class="login-input">
+        </div>
+      </div>
 
       <div class="login-form-group">
         <label for="CorreoElectronico" class="login-form-label">Correo Electrónico</label>
@@ -38,10 +54,6 @@
         </div>
       </div>
 
-      <div class="login-options">
-        <a href="@Url.Action("Forgot", "Home")" class="forgot-password-link">Olvidó su contraseña?</a>
-      </div>
-
       <button type="submit" class="btn-login" id="btn-submit">
         <span>Procesar</span>
       </button>
@@ -51,7 +63,7 @@
     <div class="login-divider"></div>
 
     <p class="login-footer-text">
-      No tiene una cuenta? <a asp-action="Register" asp-controller="Home" id="link-register">Registrarse </a>
+      Ya tiene una cuenta? <a asp-action="Login" asp-controller="Home" id="link-register">Iniciar Sesión </a>
     </p>
 
   </div>

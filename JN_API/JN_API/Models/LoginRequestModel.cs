@@ -2,11 +2,11 @@
 
 namespace JN_API.Models
 {
-    public class UsuarioModel
+    public class LoginRequestModel
     {
         [Required]
         public string CorreoElectronico { get; set; } = string.Empty;
         [Required]
-        public string Contrasenna { get; set; } = string.Empty;
+        public string Contrasenna { get; set; } = string.Empty;      
     }
 }
