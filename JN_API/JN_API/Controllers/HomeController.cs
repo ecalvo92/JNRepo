@@ -1,32 +1,58 @@
+using Dapper;
 using JN_API.Models;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 namespace JN_API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class HomeController : ControllerBase
+    public class HomeController(IConfiguration _configuration) : ControllerBase
     {
         [HttpPost]
         [Route("Login")]
         public IActionResult Login(LoginRequestModel model)
         {
-            return Ok(model);
+            using var context = new SqlConnection(_configuration.GetValue<string>("Variables:ConnectionString"));
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@CorreoElectronico", model.CorreoElectronico);
+            parameters.Add("@Contrasenna", model.Contrasenna);
+
+            var response = context.QueryFirstOrDefault<UsuarioResponse>("sp_IniciarSesion", parameters);
+
+            return Ok(response);
         }
 
         [HttpPost]
         [Route("Register")]
         public IActionResult Register(RegisterRequestModel model)
         {
-            return Ok(model);
+            using var context = new SqlConnection(_configuration.GetValue<string>("Variables:ConnectionString"));
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@CorreoElectronico", model.CorreoElectronico);
+            parameters.Add("@Contrasenna", model.Contrasenna);
+            parameters.Add("@Identificacion", model.Identificacion);
+            parameters.Add("@NombreCompleto", model.NombreCompleto);
+
+            var response = context.Execute("sp_RegistrarUsuario", parameters);
+
+            return Ok(response);
         }
 
         [HttpPost]
         [Route("Forgot")]
         public IActionResult Forgot(ForgotRequestModel model)
         {
-            return Ok(model);
+            using var context = new SqlConnection(_configuration.GetValue<string>("Variables:ConnectionString"));
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@CorreoElectronico", model.CorreoElectronico);
+
+            var response = context.QueryFirstOrDefault<UsuarioResponse>("sp_ConsultarCorreo", parameters);
+
+            return Ok(response);
         }
     }
 }

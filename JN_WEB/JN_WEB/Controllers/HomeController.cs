@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace JN_WEB.Controllers
 {
-    public class HomeController(HttpClient _httpClient) : Controller
+    public class HomeController(HttpClient _httpClient, IConfiguration _configuration) : Controller
     {
         #region Inicio de Sesión
 
@@ -19,7 +19,7 @@ namespace JN_WEB.Controllers
         public IActionResult Login(LoginRequestModel model)
         {
             using var client = _httpClient;
-            var url = "https://localhost:7145/api/Home/Login";
+            var url = _configuration.GetValue<string>("Variables:ApiBaseUrl") + "Home/Login";
 
             var response = client.PostAsJsonAsync(url, model).Result;
 
@@ -41,7 +41,7 @@ namespace JN_WEB.Controllers
         public IActionResult Register(RegisterRequestModel model)
         {
             using var client = _httpClient;
-            var url = "https://localhost:7145/api/Home/Register";
+            var url = _configuration.GetValue<string>("Variables:ApiBaseUrl") + "Home/Register";
 
             var response = client.PostAsJsonAsync(url, model).Result;
 
@@ -63,7 +63,7 @@ namespace JN_WEB.Controllers
         public IActionResult Forgot(ForgotRequestModel model)
         {
             using var client = _httpClient;
-            var url = "https://localhost:7145/api/Home/Forgot";
+            var url = _configuration.GetValue<string>("Variables:ApiBaseUrl") + "Home/Forgot";
 
             var response = client.PostAsJsonAsync(url, model).Result;
 
