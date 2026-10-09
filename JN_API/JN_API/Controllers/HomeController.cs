@@ -21,6 +21,9 @@ namespace JN_API.Controllers
 
             var response = context.QueryFirstOrDefault<UsuarioResponse>("sp_IniciarSesion", parameters);
 
+            if(response == null)
+                return NotFound(new UsuarioResponse { Mensaje = "No se validó la información correctamente" });
+
             return Ok(response);
         }
 
