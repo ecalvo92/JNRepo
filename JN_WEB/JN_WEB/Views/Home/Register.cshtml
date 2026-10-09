@@ -1,70 +1,77 @@
 ﻿@model RegisterRequestModel
 
 @{
-  Layout = "_LayoutExterno";
+    Layout = "_LayoutExterno";
 }
 
 <div class="login-wrapper">
-  <div class="login-bg-shape login-bg-shape-1"></div>
-  <div class="login-bg-shape login-bg-shape-2"></div>
+    <div class="login-bg-shape login-bg-shape-1"></div>
+    <div class="login-bg-shape login-bg-shape-2"></div>
 
-  <div class="login-card">
+    <div class="login-card">
 
-    <a asp-action="Login" asp-controller="Home" class="login-brand text-decoration-none">
-      <i class="bi bi-asterisk"></i>
-      <span>Proyecto JN</span>
-    </a>
+        <a asp-action="Login" asp-controller="Home" class="login-brand text-decoration-none">
+            <i class="bi bi-asterisk"></i>
+            <span>Proyecto JN</span>
+        </a>
 
-    <form asp-action="Register" asp-controller="Home" method="post" id="loginForm" class="needs-validation" novalidate>
+        <form asp-action="Register" asp-controller="Home" method="post" id="loginForm" class="needs-validation" novalidate>
 
-      @Html.AntiForgeryToken()
+            @Html.AntiForgeryToken()
 
-      <div class="login-form-group">
-        <label for="Identificacion" class="login-form-label">Identificación</label>
-        <div class="login-input-group">
-          <i class="bi bi-person-badge input-icon"></i>
-          <input type="text" asp-for="Identificacion" class="login-input">
-        </div>
-      </div>
+            @if (ViewBag.Mensaje != null)
+            {
+                <div class="alert alert-info text-center" role="alert">
+                    @ViewBag.Mensaje
+                </div>
+            }
 
-      <div class="login-form-group">
-        <label for="NombreCompleto" class="login-form-label">Nombre Completo</label>
-        <div class="login-input-group">
-          <i class="bi bi-person input-icon"></i>
-          <input type="text" asp-for="NombreCompleto" class="login-input">
-        </div>
-      </div>
+            <div class="login-form-group">
+                <label for="Identificacion" class="login-form-label">Identificación</label>
+                <div class="login-input-group">
+                    <i class="bi bi-person-badge input-icon"></i>
+                    <input type="text" asp-for="Identificacion" class="login-input">
+                </div>
+            </div>
 
-      <div class="login-form-group">
-        <label for="CorreoElectronico" class="login-form-label">Correo Electrónico</label>
-        <div class="login-input-group">
-          <i class="bi bi-envelope input-icon"></i>
-          <input type="text" asp-for="CorreoElectronico" class="login-input">
-        </div>
-      </div>
+            <div class="login-form-group">
+                <label for="NombreCompleto" class="login-form-label">Nombre Completo</label>
+                <div class="login-input-group">
+                    <i class="bi bi-person input-icon"></i>
+                    <input type="text" asp-for="NombreCompleto" class="login-input">
+                </div>
+            </div>
 
-      <div class="login-form-group">
-        <label for="Contrasenna" class="login-form-label">Contraseña</label>
-        <div class="login-input-group">
-          <i class="bi bi-shield-lock input-icon"></i>
-          <input type="password" asp-for="Contrasenna" class="login-input login-input-password">
-          <button type="button" class="password-toggle-btn" id="toggle-password" aria-label="Show password">
-            <i class="bi bi-eye"></i>
-          </button>
-        </div>
-      </div>
+            <div class="login-form-group">
+                <label for="CorreoElectronico" class="login-form-label">Correo Electrónico</label>
+                <div class="login-input-group">
+                    <i class="bi bi-envelope input-icon"></i>
+                    <input type="text" asp-for="CorreoElectronico" class="login-input">
+                </div>
+            </div>
 
-      <button type="submit" class="btn-login" id="btn-submit">
-        <span>Procesar</span>
-      </button>
+            <div class="login-form-group">
+                <label for="Contrasenna" class="login-form-label">Contraseña</label>
+                <div class="login-input-group">
+                    <i class="bi bi-shield-lock input-icon"></i>
+                    <input type="password" asp-for="Contrasenna" class="login-input login-input-password">
+                    <button type="button" class="password-toggle-btn" id="toggle-password" aria-label="Show password">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </div>
+            </div>
 
-    </form>
+            <button type="submit" class="btn-login" id="btn-submit">
+                <span>Procesar</span>
+            </button>
 
-    <div class="login-divider"></div>
+        </form>
 
-    <p class="login-footer-text">
-      Ya tiene una cuenta? <a asp-action="Login" asp-controller="Home" id="link-register">Iniciar Sesión </a>
-    </p>
+        <div class="login-divider"></div>
 
-  </div>
+        <p class="login-footer-text">
+            Ya tiene una cuenta? <a asp-action="Login" asp-controller="Home" id="link-register">Iniciar Sesión </a>
+        </p>
+
+    </div>
 </div>

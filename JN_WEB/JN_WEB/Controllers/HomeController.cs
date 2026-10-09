@@ -1,6 +1,7 @@
 using JN_WEB.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Net;
 
 namespace JN_WEB.Controllers
 {
@@ -44,6 +45,12 @@ namespace JN_WEB.Controllers
             var url = _configuration.GetValue<string>("Variables:ApiBaseUrl") + "Home/Register";
 
             var response = client.PostAsJsonAsync(url, model).Result;
+
+            if(response.StatusCode == HttpStatusCode.OK)
+                return RedirectToAction("Login", "Home");
+
+            var datos = response.Content.ReadFromJsonAsync<UsuarioResponse>().Result;
+            ViewBag.Mensaje = datos?.Mensaje;
 
             return View();
         }

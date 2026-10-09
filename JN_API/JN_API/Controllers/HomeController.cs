@@ -31,14 +31,17 @@ namespace JN_API.Controllers
             using var context = new SqlConnection(_configuration.GetValue<string>("Variables:ConnectionString"));
 
             var parameters = new DynamicParameters();
-            parameters.Add("@CorreoElectronico", model.CorreoElectronico);
-            parameters.Add("@Contrasenna", model.Contrasenna);
             parameters.Add("@Identificacion", model.Identificacion);
             parameters.Add("@NombreCompleto", model.NombreCompleto);
+            parameters.Add("@CorreoElectronico", model.CorreoElectronico);
+            parameters.Add("@Contrasenna", model.Contrasenna);         
 
             var response = context.Execute("sp_RegistrarUsuario", parameters);
 
-            return Ok(response);
+            if(response <= 0)
+                return UnprocessableEntity(new UsuarioResponse { Mensaje = "No se registró la información correctamente" });
+
+            return Ok(new UsuarioResponse { Mensaje = "Se registró la información correctamente" });
         }
 
         [HttpPost]
