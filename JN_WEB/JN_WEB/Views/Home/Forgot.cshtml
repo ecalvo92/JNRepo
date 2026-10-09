@@ -1,0 +1,43 @@
+﻿@model ForgotRequestModel
+
+@{
+  Layout = "_LayoutExterno";
+}
+
+<div class="login-wrapper">
+  <div class="login-bg-shape login-bg-shape-1"></div>
+  <div class="login-bg-shape login-bg-shape-2"></div>
+
+  <div class="login-card">
+
+    <a asp-action="Login" asp-controller="Home" class="login-brand text-decoration-none">
+      <i class="bi bi-asterisk"></i>
+      <span>Proyecto JN</span>
+    </a>
+
+    <form asp-action="Login" asp-controller="Home" method="post" id="loginForm" class="needs-validation" novalidate>
+
+      @Html.AntiForgeryToken()
+
+      <div class="login-form-group">
+        <label for="CorreoElectronico" class="login-form-label">Correo Electrónico</label>
+        <div class="login-input-group">
+          <i class="bi bi-envelope input-icon"></i>
+          <input type="text" asp-for="CorreoElectronico" class="login-input">
+        </div>
+      </div>
+
+      <button type="submit" class="btn-login" id="btn-submit">
+        <span>Procesar</span>
+      </button>
+
+    </form>
+
+    <div class="login-divider"></div>
+
+    <p class="login-footer-text">
+      Ya tiene una cuenta? <a asp-action="Login" asp-controller="Home" id="link-register">Iniciar Sesión </a>
+    </p>
+
+  </div>
+</div>
