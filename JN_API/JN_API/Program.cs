@@ -14,6 +14,8 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
+app.UseExceptionHandler("/api/Error/CapturarError");
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
