@@ -74,6 +74,27 @@ namespace JN_API.Controllers
             return Ok(response);
         }
 
-        
+        [HttpPut]
+        [Route("ChangePassword")]
+        public IActionResult ChangePassword(ChangePasswordRequestModel model)
+        {
+            string usuarioId = _password.Descifrar(model.UsuarioId);
+
+            if (string.IsNullOrEmpty(usuarioId))
+                return UnprocessableEntity(new UsuarioResponse { Mensaje = "El enlace no es válido o ya expiró" });
+
+            using var context = new SqlConnection(_configuration.GetValue<string>("Variables:ConnectionString"));
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@UsuarioId", usuarioId);
+            parameters.Add("@Contrasenna", model.ContrasennaNueva);
+            var response = context.Execute("sp_ActualizarContrasenna", parameters);
+
+            if (response <= 0)
+                return UnprocessableEntity(new UsuarioResponse { Mensaje = "No se actualizó la información correctamente" });
+
+            return Ok(new UsuarioResponse { Mensaje = "Se actualizó la información correctamente" });
+        }
+
     }
 }

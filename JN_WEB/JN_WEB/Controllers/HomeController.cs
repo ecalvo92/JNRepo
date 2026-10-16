@@ -108,6 +108,7 @@ namespace JN_WEB.Controllers
         [HttpGet]
         public IActionResult ChangePassword(string id)
         {
+            HttpContext.Session.SetString("UsuarioId", id);
             return View();
         }
 
@@ -115,7 +116,25 @@ namespace JN_WEB.Controllers
         public IActionResult ChangePassword(ChangePasswordRequestModel model)
         {
             if (!ModelState.IsValid)
-                return View(model);
+                return View();
+
+            string usuarioId = HttpContext.Session.GetString("UsuarioId")!;
+
+            if (string.IsNullOrEmpty(usuarioId))
+                ViewBag.Mensaje = "El enlace no es válido o ya expiró";
+
+            model.UsuarioId = usuarioId;
+
+            using var client = _httpClient;
+            var url = _configuration.GetValue<string>("Variables:ApiBaseUrl") + "Home/ChangePassword";
+
+            var response = client.PutAsJsonAsync(url, model).Result;
+
+            if (response.StatusCode == HttpStatusCode.OK)
+                return RedirectToAction("Login", "Home");
+
+            var datos = response.Content.ReadFromJsonAsync<UsuarioResponse>().Result;
+            ViewBag.Mensaje = datos?.Mensaje;
 
             return View();
         }

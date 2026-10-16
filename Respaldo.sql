@@ -25,6 +25,8 @@ SET IDENTITY_INSERT [dbo].[Usuario] ON
 GO
 INSERT [dbo].[Usuario] ([IdUsuario], [Identificacion], [NombreCompleto], [CorreoElectronico], [Contrasenna], [Estado]) VALUES (1, N'304590415', N'EDUARDO JOSE CALVO CASTILLO', N'ecalvo90415@ufide.ac.cr', N'90415', 1)
 GO
+INSERT [dbo].[Usuario] ([IdUsuario], [Identificacion], [NombreCompleto], [CorreoElectronico], [Contrasenna], [Estado]) VALUES (2, N'207960874', N'Brandon Corella', N'bcorella60874@ufide.ac.cr', N'Sap', 1)
+GO
 SET IDENTITY_INSERT [dbo].[Usuario] OFF
 GO
 
@@ -38,6 +40,34 @@ ALTER TABLE [dbo].[Usuario] ADD  CONSTRAINT [UK_Usuario_Identificacion] UNIQUE N
 (
 	[Identificacion] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+
+CREATE PROCEDURE [dbo].[sp_ActualizarContrasenna]
+	@UsuarioId   int,
+    @Contrasenna nvarchar(100)
+AS
+BEGIN
+
+	UPDATE	Usuario
+	SET		Contrasenna = @Contrasenna
+	WHERE	IdUsuario = @UsuarioId
+   
+END
+GO
+
+CREATE PROCEDURE [dbo].[sp_ConsultarCorreo]
+    @CorreoElectronico nvarchar(100)
+AS
+BEGIN
+
+    DECLARE @EstadoActivo BIT = 1
+
+    SELECT  IdUsuario, Identificacion, NombreCompleto, CorreoElectronico, Estado
+    FROM    dbo.Usuario
+    WHERE   CorreoElectronico = @CorreoElectronico
+        AND Estado = @EstadoActivo
+
+END
 GO
 
 CREATE PROCEDURE [dbo].[sp_IniciarSesion]
