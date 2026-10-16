@@ -1,3 +1,4 @@
+using JN_API.Services;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
+
+// Inversion de Dependencias
+builder.Services.AddScoped<IPasswordService, PasswordService>();
 
 var app = builder.Build();
 
