@@ -19,7 +19,7 @@
 
             @Html.AntiForgeryToken()
 
-            @if (ViewBag.Mensaje != null)
+            @if (!string.IsNullOrEmpty(ViewBag.Mensaje))
             {
                 <div class="alert alert-info text-center" role="alert">
                     @ViewBag.Mensaje
@@ -32,6 +32,7 @@
                     <i class="bi bi-envelope input-icon"></i>
                     <input type="text" asp-for="CorreoElectronico" class="login-input">
                 </div>
+                <span asp-validation-for="CorreoElectronico" class="text-danger small d-block mt-1"></span>
             </div>
 
             <div class="login-form-group">
@@ -43,6 +44,7 @@
                         <i class="bi bi-eye"></i>
                     </button>
                 </div>
+                <span asp-validation-for="Contrasenna" class="text-danger small d-block mt-1"></span>
             </div>
 
             <div class="login-options">

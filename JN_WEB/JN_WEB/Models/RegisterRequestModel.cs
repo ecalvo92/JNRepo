@@ -4,13 +4,16 @@ namespace JN_WEB.Models
 {
     public class RegisterRequestModel
     {
-        [Required]
+        [Required(ErrorMessage = "El correo electrónico es obligatorio")]
         public string CorreoElectronico { get; set; } = string.Empty;
-        [Required]
+
+        [Required(ErrorMessage = "La contraseña es obligatoria")]
         public string Contrasenna { get; set; } = string.Empty;
-        [Required]
+
+        [Required(ErrorMessage = "La identificación es obligatoria")]
         public string Identificacion { get; set; } = string.Empty;
-        [Required]
+
+        [Required(ErrorMessage = "El nombre completo es obligatorio")]
         public string NombreCompleto { get; set; } = string.Empty;
     }
 }

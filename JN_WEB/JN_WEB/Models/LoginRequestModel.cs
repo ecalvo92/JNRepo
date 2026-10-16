@@ -4,9 +4,10 @@ namespace JN_WEB.Models
 {
     public class LoginRequestModel
     {
-        [Required]
+        [Required(ErrorMessage = "El correo electrónico es obligatorio")]
         public string CorreoElectronico { get; set; } = string.Empty;
-        [Required]
+
+        [Required(ErrorMessage = "La contraseña es obligatoria")]
         public string Contrasenna { get; set; } = string.Empty;
     }
 }
