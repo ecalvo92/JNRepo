@@ -19,6 +19,9 @@ namespace JN_WEB.Controllers
         [HttpPost]
         public IActionResult Login(LoginRequestModel model)
         {
+            if(!ModelState.IsValid)
+                return View(model);
+
             using var client = _httpClient;
             var url = _configuration.GetValue<string>("Variables:ApiBaseUrl") + "Home/Login";
 
@@ -50,6 +53,9 @@ namespace JN_WEB.Controllers
         [HttpPost]
         public IActionResult Register(RegisterRequestModel model)
         {
+            if (!ModelState.IsValid)
+                return View(model);
+
             using var client = _httpClient;
             var url = _configuration.GetValue<string>("Variables:ApiBaseUrl") + "Home/Register";
 
@@ -78,6 +84,9 @@ namespace JN_WEB.Controllers
         [HttpPost]
         public IActionResult Forgot(ForgotRequestModel model)
         {
+            if (!ModelState.IsValid)
+                return View();
+
             using var client = _httpClient;
             var url = _configuration.GetValue<string>("Variables:ApiBaseUrl") + "Home/Forgot";
 
@@ -94,10 +103,24 @@ namespace JN_WEB.Controllers
 
         #endregion
 
+        #region Cambiar Contraseña
+
+        [HttpGet]
         public IActionResult ChangePassword(string id)
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult ChangePassword(ChangePasswordRequestModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            return View();
+        }
+
+        #endregion
 
         public IActionResult Index()
         {

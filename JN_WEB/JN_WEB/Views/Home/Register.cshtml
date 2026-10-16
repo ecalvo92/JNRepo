@@ -57,7 +57,7 @@
                 <label for="Contrasenna" class="login-form-label">Contraseña</label>
                 <div class="login-input-group">
                     <i class="bi bi-shield-lock input-icon"></i>
-                    <input type="password" asp-for="Contrasenna" class="login-input login-input-password">
+                    <input type="password" asp-for="Contrasenna" value="@Model?.Contrasenna" class="login-input login-input-password">
                     <button type="button" class="password-toggle-btn" id="toggle-password" aria-label="Show password">
                         <i class="bi bi-eye"></i>
                     </button>
