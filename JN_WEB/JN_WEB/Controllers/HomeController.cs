@@ -26,14 +26,15 @@ namespace JN_WEB.Controllers
             var url = _configuration.GetValue<string>("Variables:ApiBaseUrl") + "Home/Login";
 
             var response = client.PostAsJsonAsync(url, model).Result;
+            var datos = response.Content.ReadFromJsonAsync<UsuarioResponse>().Result;
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 HttpContext.Session.SetInt32("Autenticado", 1);
+                HttpContext.Session.SetString("Nombre", datos!.NombreCompleto);
                 return RedirectToAction("Index", "Home");
             }
-
-            var datos = response.Content.ReadFromJsonAsync<UsuarioResponse>().Result;
+            
             ViewBag.Mensaje = datos?.Mensaje;
 
             return View();
