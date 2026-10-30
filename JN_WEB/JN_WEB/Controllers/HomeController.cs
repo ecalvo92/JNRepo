@@ -12,6 +12,7 @@ namespace JN_WEB.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            HttpContext.Session.Clear();
             return View();
         }
 

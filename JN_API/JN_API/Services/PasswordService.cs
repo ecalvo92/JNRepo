@@ -6,7 +6,7 @@ using System.Text;
 
 namespace JN_API.Services
 {
-    public class PasswordService(IConfiguration _config) : IPasswordService
+    public class PasswordService(IConfiguration _configuration) : IPasswordService
     {
         private readonly byte[] Key = Convert.FromBase64String("sy+v61jJHH5tZTjth2g+PwKpfUiNXWA0ImlUWxikTKUedfPEC6zrkDSzsneTbfkTXJnaEchH7BcVBF4XkqIMDw==");
 
@@ -62,8 +62,8 @@ namespace JN_API.Services
 
         public async Task EnviarCorreo(string to, string subject, string htmlBody)
         {
-            var cuenta = _config.GetValue<string>("Variables:CuentaCorreo") ?? string.Empty;
-            var clave = _config.GetValue<string>("Variables:ClaveCorreo") ?? string.Empty;
+            var cuenta = _configuration.GetValue<string>("Variables:CuentaCorreo") ?? string.Empty;
+            var clave = _configuration.GetValue<string>("Variables:ClaveCorreo") ?? string.Empty;
 
             if (string.IsNullOrEmpty(clave))
                 return;
