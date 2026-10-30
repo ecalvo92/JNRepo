@@ -1791,7 +1791,6 @@ span.flatpickr-weekday {
     font-size: 1.5rem;
     font-weight: 800;
     color: var(--brand-forest-dark);
-    margin-bottom: 1.5rem;
     text-decoration: none;
     transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

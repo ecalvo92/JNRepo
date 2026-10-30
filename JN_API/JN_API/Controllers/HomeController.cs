@@ -66,11 +66,17 @@ namespace JN_API.Controllers
                 return NotFound(new UsuarioResponse { Mensaje = "No se validó la información correctamente" });
 
             //Mecanismo de recuperación
-            var usuarioId = _password.Cifrar(response.IdUsuario.ToString(), TimeSpan.FromHours(1));
+            var horas = 1;
+            var usuarioId = _password.Cifrar(response.IdUsuario.ToString(), TimeSpan.FromHours(horas));
             var linkCorreo = _configuration.GetValue<string>("Variables:LinkForgot") + usuarioId;
 
             //Enviar correo electrónico
+            var html = System.IO.File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Template", "RecuperarAcceso.html"))
+                .Replace("{{NOMBRE}}", System.Net.WebUtility.HtmlEncode(response.NombreCompleto))
+                .Replace("{{LINK}}", System.Net.WebUtility.HtmlEncode(linkCorreo))
+                .Replace("{{HORAS}}", horas.ToString());
 
+            _password.EnviarCorreo(model.CorreoElectronico, "Recuperación de Acceso", html);
             return Ok(response);
         }
 
