@@ -1,5 +1,7 @@
 ﻿@{
     var nombre = Context.Session.GetString("Nombre") ?? string.Empty;
+    var rol = Context.Session.GetString("Rol") ?? string.Empty;
+
     var partes = nombre.Split(' ', StringSplitOptions.RemoveEmptyEntries);
     var iniciales = partes.Length > 3 ? $"{partes[0][0]}{partes[2][0]}".ToUpper() : partes.Length > 1 ? $"{partes[0][0]}{partes[1][0]}".ToUpper() : nombre.Length > 0 ? nombre[..1].ToUpper() : string.Empty;
 }
@@ -96,7 +98,10 @@
                     <button class="navbar-profile-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false" id="profile-dropdown">
                         <span class="navbar-profile-img table-user-avatar rounded-circle text-white fw-bold d-flex align-items-center justify-content-center">@iniciales</span>
-                        <span class="navbar-profile-name d-none d-md-inline">@nombre</span>
+                        <div class="navbar-profile-name d-none d-md-inline-block text-start lh-sm">
+                                                    <span class="d-block">@nombre</span>
+                                                    <small class="d-block text-muted">@rol</small>
+                                                </div>
                         <i class="bi bi-chevron-down navbar-profile-caret"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-profile" aria-labelledby="profile-dropdown">

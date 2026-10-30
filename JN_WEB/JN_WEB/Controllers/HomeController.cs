@@ -33,6 +33,7 @@ namespace JN_WEB.Controllers
             {
                 HttpContext.Session.SetInt32("Autenticado", 1);
                 HttpContext.Session.SetString("Nombre", datos!.NombreCompleto);
+                HttpContext.Session.SetString("Rol", datos!.NombreRol);
                 return RedirectToAction("Index", "Home");
             }
             
