@@ -142,6 +142,14 @@ namespace JN_WEB.Controllers
 
         #endregion
 
+        [HttpGet]
+        public IActionResult CerrarSesion()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "Home");
+        }
+
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
