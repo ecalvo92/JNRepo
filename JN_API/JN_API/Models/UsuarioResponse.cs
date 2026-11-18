@@ -9,5 +9,6 @@
         public bool Estado { get; set; }
         public short IdRol { get; set; }
         public string NombreRol { get; set; } = string.Empty;
+        public string Contrasenna { get; set; } = string.Empty;
     }
 }

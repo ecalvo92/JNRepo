@@ -3,8 +3,6 @@ using JN_API.Models;
 using JN_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace JN_API.Controllers
 {
@@ -20,13 +18,13 @@ namespace JN_API.Controllers
 
             var parameters = new DynamicParameters();
             parameters.Add("@CorreoElectronico", model.CorreoElectronico);
-            parameters.Add("@Contrasenna", model.Contrasenna);
 
             var response = context.QueryFirstOrDefault<UsuarioResponse>("sp_IniciarSesion", parameters);
 
-            if(response == null)
+            if (response == null || !BCrypt.Net.BCrypt.Verify(model.Contrasenna, response.Contrasenna))
                 return NotFound(new UsuarioResponse { Mensaje = "No se validó la información correctamente" });
 
+            response.Contrasenna = string.Empty;
             return Ok(response);
         }
 
@@ -40,11 +38,11 @@ namespace JN_API.Controllers
             parameters.Add("@Identificacion", model.Identificacion);
             parameters.Add("@NombreCompleto", model.NombreCompleto);
             parameters.Add("@CorreoElectronico", model.CorreoElectronico);
-            parameters.Add("@Contrasenna", model.Contrasenna);         
+            parameters.Add("@Contrasenna", model.Contrasenna);
 
             var response = context.Execute("sp_RegistrarUsuario", parameters);
 
-            if(response <= 0)
+            if (response <= 0)
                 return UnprocessableEntity(new UsuarioResponse { Mensaje = "No se registró la información correctamente" });
 
             return Ok(new UsuarioResponse { Mensaje = "Se registró la información correctamente" });

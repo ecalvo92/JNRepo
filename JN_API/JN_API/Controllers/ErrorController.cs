@@ -1,9 +1,7 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace JN_API.Controllers
 {

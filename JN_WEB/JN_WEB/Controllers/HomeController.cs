@@ -1,6 +1,5 @@
 using JN_WEB.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 using System.Net;
 
 namespace JN_WEB.Controllers
@@ -20,7 +19,7 @@ namespace JN_WEB.Controllers
         [HttpPost]
         public IActionResult Login(LoginRequestModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return View(model);
 
             using var client = _httpClient;
@@ -36,7 +35,7 @@ namespace JN_WEB.Controllers
                 HttpContext.Session.SetString("Rol", datos!.NombreRol);
                 return RedirectToAction("Index", "Home");
             }
-            
+
             ViewBag.Mensaje = datos?.Mensaje;
 
             return View();
@@ -59,12 +58,15 @@ namespace JN_WEB.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
+            //Hacer un hash de la contraseña
+            model.Contrasenna = BCrypt.Net.BCrypt.HashPassword(model.Contrasenna);
+
             using var client = _httpClient;
             var url = _configuration.GetValue<string>("Variables:ApiBaseUrl") + "Home/Register";
 
             var response = client.PostAsJsonAsync(url, model).Result;
 
-            if(response.StatusCode == HttpStatusCode.OK)
+            if (response.StatusCode == HttpStatusCode.OK)
                 return RedirectToAction("Login", "Home");
 
             var datos = response.Content.ReadFromJsonAsync<UsuarioResponse>().Result;
@@ -127,6 +129,10 @@ namespace JN_WEB.Controllers
                 ViewBag.Mensaje = "El enlace no es válido o ya expiró";
 
             model.UsuarioId = usuarioId;
+
+            //Hacer un hash de la contraseña
+            model.ContrasennaNueva = BCrypt.Net.BCrypt.HashPassword(model.ContrasennaNueva);
+            model.ConfirmarContrasenna = BCrypt.Net.BCrypt.HashPassword(model.ConfirmarContrasenna);
 
             using var client = _httpClient;
             var url = _configuration.GetValue<string>("Variables:ApiBaseUrl") + "Home/ChangePassword";
