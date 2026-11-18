@@ -29,5 +29,24 @@ namespace JN_API.Controllers
 
             return Ok(new UsuarioResponse { Mensaje = "Se actualizó la información correctamente" });
         }
+
+        [HttpPost]
+        [Route("ConsultarUsuario")]
+        public IActionResult ConsultarUsuario(ConsultarUsuarioRequestModel model)
+        {
+            using var context = new SqlConnection(_configuration.GetValue<string>("Variables:ConnectionString"));
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@UsuarioId", model.IdUsuario);
+
+            var response = context.QueryFirstOrDefault<UsuarioResponse>("sp_ConsultarIdUsuario", parameters);
+
+            if (response == null)
+                return NotFound(new UsuarioResponse { Mensaje = "No se validó la información correctamente" });
+
+            response.Contrasenna = string.Empty;
+            return Ok(response);
+        }
+        
     }
 }

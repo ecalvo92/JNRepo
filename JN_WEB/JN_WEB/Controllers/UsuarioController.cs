@@ -12,7 +12,30 @@ namespace JN_WEB.Controllers
         [HttpGet]
         public IActionResult CambiarContrasenna()
         {
-            return View(new PerfilUsuarioViewModel());
+            var model = new ConsultarUsuarioRequestModel
+            {
+                IdUsuario = HttpContext.Session.GetInt32("ConsecutivoUsuario").GetValueOrDefault()
+            };
+
+            using var client = _httpClient;
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
+            var url = _configuration.GetValue<string>("Variables:ApiBaseUrl") + "Usuario/ConsultarUsuario";
+
+            var response = client.PostAsJsonAsync(url, model).Result;
+            var datos = response.Content.ReadFromJsonAsync<UsuarioResponse>().Result;
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var perfil = new PerfilUsuarioViewModel();
+                perfil.DatosPersonales.Identificacion = datos!.Identificacion;
+                perfil.DatosPersonales.NombreCompleto = datos!.NombreCompleto;
+                perfil.DatosPersonales.CorreoElectronico = datos!.CorreoElectronico;
+
+                return View(perfil);
+            }
+
+            ViewBag.Mensaje = datos?.Mensaje;
+            return View();
         }
 
         [HttpPost]
