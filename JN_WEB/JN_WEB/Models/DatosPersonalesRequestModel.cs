@@ -12,5 +12,7 @@ namespace JN_WEB.Models
 
         [Required(ErrorMessage = "El correo electrónico es obligatorio")]
         public string CorreoElectronico { get; set; } = string.Empty;
+
+        public int IdUsuario { get; set; }
     }
 }

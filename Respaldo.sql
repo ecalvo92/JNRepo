@@ -56,11 +56,11 @@ GO
 
 SET IDENTITY_INSERT [dbo].[Usuario] ON 
 GO
-INSERT [dbo].[Usuario] ([IdUsuario], [Identificacion], [NombreCompleto], [CorreoElectronico], [Contrasenna], [Estado], [IdRol]) VALUES (1, N'304590415', N'EDUARDO CALVO CASTILLO', N'ecalvo90415@ufide.ac.cr', N'90415', 1, 2)
+INSERT [dbo].[Usuario] ([IdUsuario], [Identificacion], [NombreCompleto], [CorreoElectronico], [Contrasenna], [Estado], [IdRol]) VALUES (1, N'304590415', N'EDUARDO JOSE CALVO CASTILLO', N'ecalvo90415@ufide.ac.cr', N'$2a$11$b3Kw62.6WMOmBgbqry2X1OWGxhLboVP//U75xPDO0m4wQOeyV2kcm', 1, 1)
 GO
-INSERT [dbo].[Usuario] ([IdUsuario], [Identificacion], [NombreCompleto], [CorreoElectronico], [Contrasenna], [Estado], [IdRol]) VALUES (2, N'207960874', N'Brandon Corella', N'bcorella60874@ufide.ac.cr', N'Sap', 1, 1)
+INSERT [dbo].[Usuario] ([IdUsuario], [Identificacion], [NombreCompleto], [CorreoElectronico], [Contrasenna], [Estado], [IdRol]) VALUES (2, N'207960874', N'BRANDON JOSUE CORELLA SANCHEZ', N'bcorella60874@ufide.ac.cr', N'$2a$11$mtKPR2VFHvzVAvqYwRsOa.K/JQ8G9tgeoGTFBrcPEbkrLHVvFjs.K', 1, 1)
 GO
-INSERT [dbo].[Usuario] ([IdUsuario], [Identificacion], [NombreCompleto], [CorreoElectronico], [Contrasenna], [Estado], [IdRol]) VALUES (3, N'115930362', N'Jasson Ricardo Bejarano Muñoz', N'jbejarano30362@ufide.ac.cr', N'VivaLDA', 1, 1)
+INSERT [dbo].[Usuario] ([IdUsuario], [Identificacion], [NombreCompleto], [CorreoElectronico], [Contrasenna], [Estado], [IdRol]) VALUES (3, N'115930362', N'JASSON RICARDO BEJARANO MUÑOZ', N'jbejarano30362@ufide.ac.cr', N'$2a$11$CXPj6WYJkK7Qxo4Xfs11KOShZwrfATXkKzf7wK3w8bZ1taqIVcYy6', 1, 1)
 GO
 SET IDENTITY_INSERT [dbo].[Usuario] OFF
 GO
@@ -96,6 +96,23 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [dbo].[sp_ActualizarDatosPersonales]
+	@UsuarioId			int,
+    @CorreoElectronico	nvarchar(100),
+	@Identificacion		nvarchar(20),
+	@NombreCompleto		nvarchar(250)
+AS
+BEGIN
+
+	UPDATE	Usuario
+	SET		CorreoElectronico = @CorreoElectronico,
+			Identificacion = @Identificacion,
+			NombreCompleto = @NombreCompleto
+	WHERE	IdUsuario = @UsuarioId
+   
+END
+GO
+
 CREATE PROCEDURE [dbo].[sp_ConsultarCorreo]
     @CorreoElectronico nvarchar(100)
 AS
@@ -103,27 +120,41 @@ BEGIN
 
     DECLARE @EstadoActivo BIT = 1
 
-    SELECT  IdUsuario, Identificacion, NombreCompleto, CorreoElectronico, Estado
-    FROM    dbo.Usuario
+    SELECT  IdUsuario, Identificacion, NombreCompleto, CorreoElectronico, Estado, R.IdRol, NombreRol, Contrasenna
+    FROM    dbo.Usuario U
+    INNER JOIN dbo.Rol R ON U.IdRol = R.IdRol
     WHERE   CorreoElectronico = @CorreoElectronico
         AND Estado = @EstadoActivo
 
 END
 GO
 
-CREATE PROCEDURE [dbo].[sp_IniciarSesion]
-    @CorreoElectronico nvarchar(100),
-    @Contrasenna nvarchar(100)
+CREATE PROCEDURE [dbo].[sp_ConsultarIdUsuario]
+    @UsuarioId nvarchar(100)
 AS
 BEGIN
 
     DECLARE @EstadoActivo BIT = 1
 
-    SELECT  IdUsuario, Identificacion, NombreCompleto, CorreoElectronico, Estado, R.IdRol, NombreRol
+    SELECT  IdUsuario, Identificacion, NombreCompleto, CorreoElectronico, Estado, R.IdRol, NombreRol, Contrasenna
+    FROM    dbo.Usuario U
+    INNER JOIN dbo.Rol R ON U.IdRol = R.IdRol
+    WHERE   IdUsuario = @UsuarioId
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[sp_IniciarSesion]
+    @CorreoElectronico nvarchar(100)
+AS
+BEGIN
+
+    DECLARE @EstadoActivo BIT = 1
+
+    SELECT  IdUsuario, Identificacion, NombreCompleto, CorreoElectronico, Estado, R.IdRol, NombreRol, Contrasenna
     FROM    dbo.Usuario U
     INNER JOIN dbo.Rol R ON U.IdRol = R.IdRol
     WHERE   CorreoElectronico = @CorreoElectronico
-        AND Contrasenna = @Contrasenna
         AND Estado = @EstadoActivo
 
 END

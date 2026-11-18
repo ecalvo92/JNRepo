@@ -47,6 +47,26 @@ namespace JN_API.Controllers
             response.Contrasenna = string.Empty;
             return Ok(response);
         }
+
+        [HttpPut]
+        [Route("ActualizarDatosPersonales")]
+        public IActionResult ActualizarDatosPersonales(ActualizarDatosPersonalesRequestModel model)
+        {
+            using var context = new SqlConnection(_configuration.GetValue<string>("Variables:ConnectionString"));
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@UsuarioId", model.IdUsuario);
+            parameters.Add("@CorreoElectronico", model.CorreoElectronico);
+            parameters.Add("@Identificacion", model.Identificacion);
+            parameters.Add("@NombreCompleto", model.NombreCompleto);
+
+            var response = context.Execute("sp_ActualizarDatosPersonales", parameters);
+
+            if (response <= 0)
+                return UnprocessableEntity(new UsuarioResponse { Mensaje = "No se actualizó la información correctamente" });
+
+            return Ok(new UsuarioResponse { Mensaje = "Se actualizó la información correctamente" });
+        }
         
     }
 }
