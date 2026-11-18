@@ -1,12 +1,13 @@
 ﻿using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace JN_API.Services
 {
-    public class PasswordService(IConfiguration _configuration) : IPasswordService
+    public class PasswordService(IConfiguration _configuration, IHttpContextAccessor _httpContext) : IPasswordService
     {
         private readonly byte[] Key = Convert.FromBase64String("sy+v61jJHH5tZTjth2g+PwKpfUiNXWA0ImlUWxikTKUedfPEC6zrkDSzsneTbfkTXJnaEchH7BcVBF4XkqIMDw==");
 
@@ -79,6 +80,32 @@ namespace JN_API.Services
             await client.AuthenticateAsync(cuenta, clave);
             await client.SendAsync(message);
             await client.DisconnectAsync(true);
+        }
+
+        public string GenerarToken(int idUsuario, int idRol, string nombreCompleto)
+        {
+            var claims = new[]
+            {
+                new System.Security.Claims.Claim("IdUsuario", idUsuario.ToString()),
+                new System.Security.Claims.Claim("IdRol", idRol.ToString()),
+                new System.Security.Claims.Claim("NombreCompleto", nombreCompleto)
+            };
+            var key = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("JWT:SecretKey")!));
+            var creds = new Microsoft.IdentityModel.Tokens.SigningCredentials(key, Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256);
+            var token = new System.IdentityModel.Tokens.Jwt.JwtSecurityToken(
+                issuer: _configuration.GetValue<string>("Variables:JwtIssuer"),
+                audience: _configuration.GetValue<string>("Variables:JwtAudience"),
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(1),
+                signingCredentials: creds
+            );
+            return new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public int ObtenerConsecutivoToken()
+        {
+            var valor = _httpContext.HttpContext?.User.FindFirstValue("IdUsuario");
+            return int.TryParse(valor, out var id) ? id : 0;
         }
     }
 }

@@ -1,11 +1,13 @@
 using Dapper;
 using JN_API.Models;
 using JN_API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 
 namespace JN_API.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class HomeController(IConfiguration _configuration, IPasswordService _password) : ControllerBase
@@ -25,6 +27,8 @@ namespace JN_API.Controllers
                 return NotFound(new UsuarioResponse { Mensaje = "No se validó la información correctamente" });
 
             response.Contrasenna = string.Empty;
+            response.Token = _password.GenerarToken(response.IdUsuario, response.IdRol, response.NombreCompleto);
+
             return Ok(response);
         }
 
