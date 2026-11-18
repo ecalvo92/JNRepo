@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const toggleButtons = document.querySelectorAll('.password-toggle-btn');
 
     toggleButtons.forEach(function (togglePassword) {
-        const passwordInput = togglePassword.closest('.login-input-group').querySelector('.login-input-password');
+        const passwordInput = togglePassword.closest('.login-input-group, .input-group-custom').querySelector('.login-input-password, input[type="password"], input[type="text"]');
 
         if (!passwordInput) {
             return;

@@ -31,6 +31,7 @@ namespace JN_WEB.Controllers
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 HttpContext.Session.SetInt32("Autenticado", 1);
+                HttpContext.Session.SetInt32("ConsecutivoUsuario", datos!.IdUsuario);
                 HttpContext.Session.SetString("Nombre", datos!.NombreCompleto);
                 HttpContext.Session.SetString("Rol", datos!.NombreRol);
                 HttpContext.Session.SetString("Token", datos!.Token);

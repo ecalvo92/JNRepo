@@ -18,8 +18,16 @@
                     </p>
 
                     <div class="d-flex flex-column flex-sm-row justify-content-center gap-2 mb-4">
-                        <a href="/" class="btn btn-primary px-4">Ir al inicio</a>
-                        <button type="button" class="btn btn-outline-secondary px-4" onclick="history.back()">Volver</button>
+
+                        @if (autenticado != 1)
+                        {
+                            <a asp-action="Login" asp-controller="Home" class="btn btn-primary px-4">Ir al inicio</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Index" asp-controller="Home" class="btn btn-primary px-4">Ir al inicio</a>
+                        }
+                       
                     </div>
 
                 </div>
