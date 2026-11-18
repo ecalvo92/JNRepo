@@ -31,7 +31,8 @@
                 <label for="Identificacion" class="login-form-label">Identificación</label>
                 <div class="login-input-group">
                     <i class="bi bi-person-badge input-icon"></i>
-                    <input type="text" asp-for="Identificacion" class="login-input">
+                    <input type="text" asp-for="Identificacion" class="login-input"
+                    onkeyup="ConsultarNombrePersona();">
                 </div>
                 <span asp-validation-for="Identificacion" class="text-danger small d-block mt-1"></span>
             </div>
@@ -40,7 +41,7 @@
                 <label for="NombreCompleto" class="login-form-label">Nombre Completo</label>
                 <div class="login-input-group">
                     <i class="bi bi-person input-icon"></i>
-                    <input type="text" asp-for="NombreCompleto" class="login-input">
+                    <input type="text" asp-for="NombreCompleto" class="login-input" readonly="readonly">
                 </div>
                 <span asp-validation-for="NombreCompleto" class="text-danger small d-block mt-1"></span>
             </div>
@@ -80,3 +81,7 @@
 
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/registro.js" asp-append-version="true"></script>
+}
